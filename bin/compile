@@ -26,7 +26,7 @@ ln -svf ../libreoffice/program/*.so .
 echo "==================================== GENERATE LIBREOFFICE CONFIG ===================================="
 
 # Run soffice with a fake macro so the .config directory is generated
-$BUILD_DIR/vendor/libreoffice/program/soffice --headless --invisible 'macro:///'
+soffice --headless --invisible 'macro:///'
 # Move generated .config to the build dir so it's persisted after slug compilation
 LIBREOFFICE_CONFIG_DIR=$BUILD_DIR/.config/libreoffice
 LIBREOFFICE_SOURCE_CONFIG_DIR=/app/.config/libreoffice/4
