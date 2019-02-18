@@ -22,3 +22,20 @@ ln -svf mesa/libGL.so.1 .
 
 cd $APT_DIR/usr/lib/x86_64-linux-gnu
 ln -svf ../libreoffice/program/*.so .
+
+echo "==================================== GENERATE LIBREOFFICE CONFIG ===================================="
+
+# Run soffice with a fake macro so the .config directory is generated
+$BUILD_DIR/vendor/libreoffice/program/soffice --headless --invisible 'macro:///'
+# Move generated .config to the build dir so it's persisted after slug compilation
+LIBREOFFICE_CONFIG_DIR=$BUILD_DIR/.config/libreoffice
+LIBREOFFICE_SOURCE_CONFIG_DIR=/app/.config/libreoffice/4
+mkdir -p $LIBREOFFICE_CONFIG_DIR
+cp -rf $LIBREOFFICE_SOURCE_CONFIG_DIR $LIBREOFFICE_CONFIG_DIR || true
+echo "Copying macro..."
+# Copy custom macro
+MACRO_PATH=$BUILD_DIR/misc/libreoffice_macros/Module1.xba
+LIBREOFFICE_MACROS_DIRECTORY=$LIBREOFFICE_CONFIG_DIR/4/user/basic/Standard/
+cp ${MACRO_PATH} ${LIBREOFFICE_MACROS_DIRECTORY}
+
+echo "=================================== DONE ================================"
